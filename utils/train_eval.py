@@ -137,8 +137,8 @@ def create_eval_step(config, model):
         pred, y = eval_fn(state.params, batch)
         pred = pred.reshape(y.shape)
         if not config.model.model_name.lower().startswith("cvit"):
-            pred = rearrange(pred, "b h w c -> b (h w) c")
-            y = rearrange(y, "b h w c -> b (h w) c")
+            pred = rearrange(pred, "b h w d c -> b (h w d) c")
+            y = rearrange(y, "b h w d c -> b (h w d) c")
 
         l1_num, l1_denom, _ = compute_lp_norms(pred, y, ord=1)
         l2_num, l2_denom, _ = compute_lp_norms(pred, y, ord=2)

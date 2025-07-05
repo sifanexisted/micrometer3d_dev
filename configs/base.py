@@ -19,8 +19,8 @@ def get_base_config():
     config.seed = 42
 
     # Input shape for initializing Flax models
-    config.x_dim = [2, 256, 256, 7]
-    config.coords_dim = [1024, 2]  # Only for initializing CViT model
+    config.x_dim = [2, 128, 128, 32, 7]
+    config.coords_dim = [1024, 3]  # Only for initializing CViT model
     # config.coords_dim = [2, 1024, 2]  # Only for initializing CViT model
 
     # Training or evaluation

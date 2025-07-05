@@ -275,7 +275,7 @@ class BatchParser:
     @partial(jit, static_argnums=(0,))
     def random_query(self, batch, rng_key=None):
         batch_inputs, batch_outputs = batch
-        batch_outputs = rearrange(batch_outputs, "b h w c -> b (h w) c")
+        batch_outputs = rearrange(batch_outputs, "b h w d c -> b (h w d) c")
 
         query_index = random.choice(
             rng_key, batch_outputs.shape[1], (self.num_query_points,), replace=False
