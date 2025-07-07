@@ -152,8 +152,8 @@ def generate_paths_and_keys(data_path, split, suffixes):
     inputs_path = os.path.join(data_path, f"{split}_inputs")
     outputs_path = os.path.join(data_path, f"{split}_outputs")
 
-    input_keys = [f"cmme_{split}_inputs_{suffix}" for suffix in suffixes]
-    output_keys = [f"cmme_{split}_outputs_{suffix}" for suffix in suffixes]
+    input_keys = [f"cmme_3d_{split}_inputs_{suffix}" for suffix in suffixes]
+    output_keys = [f"cmme_3d_{split}_outputs_{suffix}" for suffix in suffixes]
 
     input_files = [os.path.join(inputs_path, f"{key}.mat") for key in input_keys]
     output_files = [os.path.join(outputs_path, f"{key}.mat") for key in output_keys]
