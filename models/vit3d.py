@@ -83,7 +83,7 @@ class PatchEmbed3D(nn.Module):
 
     @nn.compact
     def __call__(self, inputs):
-        b, h, w, c = inputs.shape
+        b, h, w, d, c = inputs.shape
         x = nn.Conv(
             self.emb_dim,
             (self.patch_size[0], self.patch_size[1], self.patch_size[2]),
