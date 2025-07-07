@@ -17,7 +17,6 @@ def _register(get_config):
 ##################################
 
 
-
 @_register
 def get_cvit_h_8_config():
     # need a batch size of 8 for this model when running on GPUs of 40GB memory
@@ -35,7 +34,7 @@ def get_cvit_h_8_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -57,7 +56,7 @@ def get_cvit_h_16_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -79,7 +78,7 @@ def get_cvit_l_8_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -101,7 +100,7 @@ def get_cvit_l_16_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -123,7 +122,7 @@ def get_cvit_b_8_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -145,7 +144,7 @@ def get_cvit_b_16_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -167,7 +166,7 @@ def get_cvit_s_8_config():
     config.num_heads = 8
     config.dec_num_heads = 16
     config.mlp_ratio = 1
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -189,7 +188,7 @@ def get_cvit_s_16_config():
     config.num_heads = 8
     config.dec_num_heads = 16
     config.mlp_ratio = 1
-    config.out_dim = 9
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
