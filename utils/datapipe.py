@@ -93,7 +93,7 @@ class BaseDataset(PlainDataset):
         batch_inputs, batch_outputs = super().__getitem__(index)
 
         if self.channel_last:
-            batch_inputs = np.expand_dims(batch_inputs, axis=1)  # Add channel dimension
+            batch_inputs = np.expand_dims(batch_inputs, axis=0)  # Add channel dimension
             batch_inputs = np.transpose(batch_inputs, (2, 3, 1, 0))  # Convert to (H, W, C)
             batch_outputs = np.transpose(
                 batch_outputs, (2, 3, 1, 0)
@@ -101,7 +101,7 @@ class BaseDataset(PlainDataset):
 
         # Concatenate the grid and labels to the inputs
         batch_inputs = batch_inputs[
-            :: self.downsample_factor, :: self.downsample_factor
+            :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
         ]
         batch_inputs = np.concatenate([batch_inputs, self.grid], axis=-1)
 
@@ -110,7 +110,6 @@ class BaseDataset(PlainDataset):
         ]
 
         return batch_inputs, batch_outputs
-
 
 class CViTDataset(BaseDataset):
     def __init__(
