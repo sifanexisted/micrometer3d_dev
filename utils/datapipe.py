@@ -20,10 +20,8 @@ class PlainDataset(Dataset):
         self,
         input_files,
         output_files,
-        label_files,
         input_keys,
         output_keys,
-        label_keys,
         downsample_factor=2,
     ):
         super().__init__()
@@ -32,16 +30,12 @@ class PlainDataset(Dataset):
         self.num_files = len(input_files)
         self.inputs = []
         self.outputs = []
-        self.labels = []
 
         for input_file, input_key in zip(input_files, input_keys):
             self.inputs.append(h5py.File(input_file, "r")[input_key])
 
         for output_file, output_key in zip(output_files, output_keys):
             self.outputs.append(h5py.File(output_file, "r")[output_key])
-
-        for label_file, label_key in zip(label_files, label_keys):
-            self.labels.append(h5py.File(label_file, "r")[label_key][:].T)
 
     def __len__(self):
         # Assuming all datasets have the same length, use the length of the first one
@@ -54,13 +48,11 @@ class PlainDataset(Dataset):
 
         input_data = self.inputs[file_idx]
         output_data = self.outputs[file_idx]
-        label_data = self.labels[file_idx]
 
         batch_inputs = np.array(input_data[index])
         batch_outputs = np.array(output_data[index])
-        batch_labels = np.array(label_data[index])
 
-        return batch_inputs, batch_outputs, batch_labels
+        return batch_inputs, batch_outputs
 
 
 class BaseDataset(PlainDataset):
@@ -69,27 +61,21 @@ class BaseDataset(PlainDataset):
         self,
         input_files,
         output_files,
-        label_files,
         input_keys,
         output_keys,
-        label_keys,
         downsample_factor=2,
         channel_last=True,
-        log_label=True,
     ):
         super().__init__(
             input_files,
             output_files,
-            label_files,
             input_keys,
             output_keys,
-            label_keys,
             downsample_factor,
         )
         self.channel_last = channel_last
-        self.log_label = log_label
 
-        b, c, h, d, w = self.inputs[0].shape
+        b, c, h, d, w = self.outputs[0].shape
         self.h = h // self.downsample_factor
         self.w = w // self.downsample_factor
         self.d = d // self.downsample_factor
@@ -104,24 +90,19 @@ class BaseDataset(PlainDataset):
 
     def __getitem__(self, index):
         # Get the original batch inputs, outputs, and labels
-        batch_inputs, batch_outputs, batch_labels = super().__getitem__(index)
+        batch_inputs, batch_outputs = super().__getitem__(index)
 
         if self.channel_last:
             batch_inputs = np.transpose(batch_inputs, (1, 2, 0))  # Convert to (H, W, C)
             batch_outputs = np.transpose(
                 batch_outputs, (1, 2, 0)
-            )  # Convert to (H, W, C)
-
-        if self.log_label:
-            # batch_labels[[0, 2]] = np.log(batch_labels[[0, 2]])
-            batch_labels = np.log(batch_labels)
+            )  # Convert to (H, W, D, C)
 
         # Concatenate the grid and labels to the inputs
         batch_inputs = batch_inputs[
             :: self.downsample_factor, :: self.downsample_factor
         ]
-        batch_labels = repeat(batch_labels, "c -> h w d c", h=self.h, w=self.w, d=self.d)
-        batch_inputs = np.concatenate([batch_inputs, batch_labels, self.grid], axis=-1)
+        batch_inputs = np.concatenate([batch_inputs, self.grid], axis=-1)
 
         batch_outputs = batch_outputs[
             :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
@@ -135,25 +116,19 @@ class CViTDataset(BaseDataset):
         self,
         input_files,
         output_files,
-        label_files,
         input_keys,
         output_keys,
-        label_keys,
         downsample_factor=2,
         num_query_points=None,
         channel_last=True,
-        log_label=True,
     ):
         super().__init__(
             input_files,
             output_files,
-            label_files,
             input_keys,
             output_keys,
-            label_keys,
             downsample_factor,
             channel_last,
-            log_label,
         )
         self.num_query_points = num_query_points
 
@@ -176,23 +151,18 @@ class CViTDataset(BaseDataset):
 def generate_paths_and_keys(data_path, split, suffixes):
     inputs_path = os.path.join(data_path, f"{split}_inputs")
     outputs_path = os.path.join(data_path, f"{split}_outputs")
-    labels_path = os.path.join(data_path, f"{split}_labels")
 
     input_keys = [f"cmme_{split}_inputs_{suffix}" for suffix in suffixes]
     output_keys = [f"cmme_{split}_outputs_{suffix}" for suffix in suffixes]
-    label_keys = [f"cmme_{split}_labels_{suffix}" for suffix in suffixes]
 
     input_files = [os.path.join(inputs_path, f"{key}.mat") for key in input_keys]
     output_files = [os.path.join(outputs_path, f"{key}.mat") for key in output_keys]
-    label_files = [os.path.join(labels_path, f"{key}.mat") for key in label_keys]
 
     return {
         "input_files": input_files,
         "output_files": output_files,
-        "label_files": label_files,
         "input_keys": input_keys,
         "output_keys": output_keys,
-        "label_keys": label_keys,
     }
 
 
@@ -208,20 +178,16 @@ def create_datasets(config):
     train_dataset = BaseDataset(
         train_data["input_files"],
         train_data["output_files"],
-        train_data["label_files"],
         train_data["input_keys"],
         train_data["output_keys"],
-        train_data["label_keys"],
         downsample_factor=config.dataset.downsample_factor,
     )
 
     test_dataset = BaseDataset(
         test_data["input_files"],
         test_data["output_files"],
-        test_data["label_files"],
         test_data["input_keys"],
         test_data["output_keys"],
-        test_data["label_keys"],
         downsample_factor=config.dataset.downsample_factor,
     )
 

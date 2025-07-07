@@ -75,7 +75,7 @@ class CViT(nn.Module):
 
     @nn.compact
     def __call__(self, x, coords):
-        b, h, w, c = x.shape
+        b, h, w, d, c = x.shape
 
         # Lift inputs to latent space by FNO layers
         x = FNOEncoder(

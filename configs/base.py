@@ -19,50 +19,29 @@ def get_base_config():
     config.seed = 42
 
     # Input shape for initializing Flax models
-    config.x_dim = [2, 128, 128, 32, 7]
+    config.x_dim = [2, 128, 128, 32, 1]
     config.coords_dim = [1024, 3]  # Only for initializing CViT model
-    # config.coords_dim = [2, 1024, 2]  # Only for initializing CViT model
 
     # Training or evaluation
     config.mode = "train"
 
     # Weights & Biases
     config.wandb = wandb = ml_collections.ConfigDict()
-    wandb.project = "micrometer"
+    wandb.project = "micrometer3d"
     wandb.tag = None
 
     # Dataset
     config.dataset = dataset = ml_collections.ConfigDict()
-    dataset.data_path = "/scratch2/PDEDatasets/CMME"
-    # dataset.data_path = "/lus/eagle/projects/Micrometer/CMME"
+    dataset.data_path = "/scratch2/PDEDatasets/CMME/Micrometer3D"
     dataset.train_files = [
         "p1",
-        "p2",
-        "p3",
-        "p4",
-        "p5",
-        "p6",
-        "p7",
-        "p8",
-        "p9",
-        "p10",
-        "p11",
-        "p12",
-        "p13",
-        "p14",
-        "p15",
-        "p16",
-        "p17",
-        "p18",
-        "p19",
-        "p20",
     ]
     dataset.test_files = ["p1"]
-    dataset.downsample_factor = 2
+    dataset.downsample_factor = 1
     dataset.train_batch_size = 16  # Per device
     dataset.test_batch_size = 2  # Per device
-    dataset.train_samples = 40000  # Use all data for training
-    dataset.test_samples = 2000  # Use all data for testing
+    dataset.train_samples = 1000  # Use all data for training
+    dataset.test_samples = 100  # Use all data for testing
     dataset.num_workers = 8
 
     # Learning rate
