@@ -12,7 +12,7 @@ except IOError:
     README = ""
 
 setup(
-    name="micrometer",
+    name="micrometer3d",
     version="",
     url=" ",
     author="Sifan Wang",
