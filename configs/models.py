@@ -17,27 +17,6 @@ def _register(get_config):
 ##################################
 
 
-@_register
-def get_cvit_test_config():
-    # need a batch size of 8 for this model when running on GPUs of 40GB memory
-    config = ml_collections.ConfigDict()
-    config.model_name = "CViT-L-16-dec_depth-4"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
-    config.fourier_depth = 4
-    config.fourier_emb_dim = 96
-    config.fourier_modes = 64
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
-    config.depth = 12
-    config.dec_depth = 2
-    config.num_heads = 16
-    config.dec_num_heads = 16
-    config.mlp_ratio = 2
-    config.out_dim = 9
-    config.eps = 1e5
-    config.layer_norm_eps = 1e-5
-    return config
 
 @_register
 def get_cvit_h_8_config():
@@ -87,9 +66,9 @@ def get_cvit_h_16_config():
 @_register
 def get_cvit_l_8_config():
     config = ml_collections.ConfigDict()
-    config.model_name = "CViT-L-8"
-    config.patch_size = (8, 8)
-    config.grid_size = (256, 256)
+    config.model_name = "CViT-L"
+    config.patch_size = (8, 8, 4)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 64
@@ -110,8 +89,8 @@ def get_cvit_l_8_config():
 def get_cvit_l_16_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-L-16"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
+    config.patch_size = (16, 16, 8)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 64
@@ -132,8 +111,8 @@ def get_cvit_l_16_config():
 def get_cvit_b_8_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-B-8"
-    config.patch_size = (8, 8)
-    config.grid_size = (256, 256)
+    config.patch_size = (8, 8, 4)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 32
@@ -154,8 +133,8 @@ def get_cvit_b_8_config():
 def get_cvit_b_16_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-B-16"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
+    config.patch_size = (16, 16, 8)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 32
@@ -176,8 +155,8 @@ def get_cvit_b_16_config():
 def get_cvit_s_8_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-S-8"
-    config.patch_size = (8, 8)
-    config.grid_size = (256, 256)
+    config.patch_size = (8, 8, 4)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 32
     config.fourier_modes = 32
@@ -198,8 +177,8 @@ def get_cvit_s_8_config():
 def get_cvit_s_16_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-S-16"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
+    config.patch_size = (16, 16, 8)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 32
     config.fourier_modes = 32
