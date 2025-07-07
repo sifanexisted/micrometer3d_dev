@@ -75,7 +75,7 @@ class BaseDataset(PlainDataset):
         )
         self.channel_last = channel_last
 
-        b, c, h, d, w = self.outputs[0].shape
+        b, c, d, h, w = self.outputs[0].shape
         self.h = h // self.downsample_factor
         self.w = w // self.downsample_factor
         self.d = d // self.downsample_factor
@@ -93,9 +93,10 @@ class BaseDataset(PlainDataset):
         batch_inputs, batch_outputs = super().__getitem__(index)
 
         if self.channel_last:
-            batch_inputs = np.transpose(batch_inputs, (1, 2, 0))  # Convert to (H, W, C)
+            batch_inputs = np.expand_dims(batch_inputs, axis=1)  # Add channel dimension
+            batch_inputs = np.transpose(batch_inputs, (2, 3, 1, 0))  # Convert to (H, W, C)
             batch_outputs = np.transpose(
-                batch_outputs, (1, 2, 0)
+                batch_outputs, (2, 3, 1, 0)
             )  # Convert to (H, W, D, C)
 
         # Concatenate the grid and labels to the inputs
