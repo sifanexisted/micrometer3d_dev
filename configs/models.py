@@ -71,8 +71,8 @@ def get_cvit_l_8_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 64
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
+    config.emb_dim = 768
+    config.dec_emb_dim = 768
     config.depth = 8
     config.dec_depth = 2
     config.num_heads = 16
@@ -93,8 +93,8 @@ def get_cvit_l_16_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 64
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
+    config.emb_dim = 768
+    config.dec_emb_dim = 768
     config.depth = 8
     config.dec_depth = 2
     config.num_heads = 16
@@ -115,8 +115,8 @@ def get_cvit_b_8_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 32
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
+    config.emb_dim = 384
+    config.dec_emb_dim = 384
     config.depth = 6
     config.dec_depth = 2
     config.num_heads = 16
@@ -137,8 +137,8 @@ def get_cvit_b_16_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 64
     config.fourier_modes = 32
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
+    config.emb_dim = 384
+    config.dec_emb_dim = 384
     config.depth = 6
     config.dec_depth = 2
     config.num_heads = 16
@@ -159,8 +159,8 @@ def get_cvit_s_8_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 32
     config.fourier_modes = 32
-    config.emb_dim = 256
-    config.dec_emb_dim = 256
+    config.emb_dim = 192
+    config.dec_emb_dim = 192
     config.depth = 4
     config.dec_depth = 2
     config.num_heads = 8
@@ -181,8 +181,8 @@ def get_cvit_s_16_config():
     config.fourier_depth = 4
     config.fourier_emb_dim = 32
     config.fourier_modes = 32
-    config.emb_dim = 256
-    config.dec_emb_dim = 256
+    config.emb_dim = 192
+    config.dec_emb_dim = 192
     config.depth = 4
     config.dec_depth = 2
     config.num_heads = 8
