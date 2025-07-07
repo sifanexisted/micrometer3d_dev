@@ -7,7 +7,7 @@ from flax.training import train_state
 
 import optax
 
-from models import CViT, UNet, ViT, FNO2d
+from models import CViT, UNet, ViT, FNO3d
 
 
 def create_model(config):
