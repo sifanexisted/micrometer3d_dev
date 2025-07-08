@@ -69,8 +69,8 @@ def get_cvit_l_8_config():
     config.patch_size = (8, 8, 4)
     config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
-    config.fourier_emb_dim = 20
-    config.fourier_modes = 20
+    config.fourier_emb_dim = 24
+    config.fourier_modes = 24
     config.emb_dim = 768
     config.dec_emb_dim = 768
     config.depth = 8
@@ -91,8 +91,8 @@ def get_cvit_l_16_config():
     config.patch_size = (16, 16, 8)
     config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
-    config.fourier_emb_dim = 20
-    config.fourier_modes = 20
+    config.fourier_emb_dim = 24
+    config.fourier_modes = 24
     config.emb_dim = 768
     config.dec_emb_dim = 768
     config.depth = 8
