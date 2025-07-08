@@ -178,9 +178,9 @@ def get_cvit_s_16_config():
     config.model_name = "CViT-S-16"
     config.patch_size = (16, 16, 8)
     config.grid_size = (128, 128, 32)
-    config.fourier_depth = 4
-    config.fourier_emb_dim = 32
-    config.fourier_modes = 32
+    config.fourier_depth = 2
+    config.fourier_emb_dim = 12
+    config.fourier_modes = 12
     config.emb_dim = 192
     config.dec_emb_dim = 192
     config.depth = 4
