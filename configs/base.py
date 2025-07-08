@@ -39,7 +39,7 @@ def get_base_config():
     dataset.train_batch_size = 16  # Per device
     dataset.test_batch_size = 2  # Per device
     dataset.train_samples = 1000  # Use all data for training
-    dataset.test_samples = 100  # Use all data for testing
+    dataset.test_samples = 10  # Use all data for testing
     dataset.num_workers = 8
 
     # Learning rate
@@ -67,7 +67,7 @@ def get_base_config():
 
     # Evaluation
     config.eval = eval = ml_collections.ConfigDict()
-    eval.num_eval_chunks = 2
+    eval.num_eval_chunks = 128
 
     # Logging
     config.logging = logging = ml_collections.ConfigDict()
