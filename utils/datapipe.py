@@ -112,12 +112,12 @@ class BaseDataset(Dataset):
 
         # Concatenate the grid and labels to the inputs
         self.inputs = self.inputs[
-                       :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
+                       :, : self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                        ]
-        self.inputs = np.concatenate([batch_inputs, self.grid], axis=-1)
+        self.inputs = np.concatenate([self.inputs, self.grid], axis=-1)
 
         self.outputs = self.outputs[
-                        :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
+                        :, : self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                         ]
 
     def __getitem__(self, index):
