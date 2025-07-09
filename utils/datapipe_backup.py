@@ -14,11 +14,8 @@ import torch
 from torch.utils.data import Dataset, DataLoader, Subset
 
 
-import h5py
-import numpy as np
-from torch.utils.data import Dataset
-
 class PlainDataset(Dataset):
+    # This dataset class is used for homogenization
     def __init__(
         self,
         input_files,
@@ -30,35 +27,35 @@ class PlainDataset(Dataset):
         super().__init__()
         self.downsample_factor = downsample_factor
 
-        input_list = []
-        output_list = []
+        self.num_files = len(input_files)
+        self.inputs = []
+        self.outputs = []
 
-        # Load and concatenate all input files
         for input_file, input_key in zip(input_files, input_keys):
-            with h5py.File(input_file, "r") as f:
-                input_list.append(np.array(f[input_key]))
+            self.inputs.append(h5py.File(input_file, "r")[input_key])
 
-        # Load and concatenate all output files
         for output_file, output_key in zip(output_files, output_keys):
-            with h5py.File(output_file, "r") as f:
-                output_list.append(np.array(f[output_key]))
-
-        # Concatenate across the first axis (samples)
-        self.inputs = np.concatenate(input_list, axis=0)
-        self.outputs = np.concatenate(output_list, axis=0)
-
-        # Sanity check
-        assert len(self.inputs) == len(self.outputs), "Mismatched input/output lengths"
+            self.outputs.append(h5py.File(output_file, "r")[output_key])
 
     def __len__(self):
-        return len(self.inputs)
+        # Assuming all datasets have the same length, use the length of the first one
+        return len(self.inputs[0]) * self.num_files
 
     def __getitem__(self, index):
-        return self.inputs[index], self.outputs[index]
+        # Choose an input file randomly each time
+        file_idx = index // len(self.inputs[0])
+        index = index % len(self.inputs[0])
+
+        input_data = self.inputs[file_idx]
+        output_data = self.outputs[file_idx]
+
+        batch_inputs = np.array(input_data[index])
+        batch_outputs = np.array(output_data[index])
+
+        return batch_inputs, batch_outputs
 
 
-
-class BaseDataset(Dataset):
+class BaseDataset(PlainDataset):
     # This dataset class is used for training VIT, FNO, UNet models.
     def __init__(
         self,
@@ -66,27 +63,17 @@ class BaseDataset(Dataset):
         output_files,
         input_keys,
         output_keys,
-        downsample_factor=2
+        downsample_factor=2,
+        channel_last=True,
     ):
-        super().__init__()
-        self.downsample_factor = downsample_factor
-
-        input_list = []
-        output_list = []
-
-        # Load and concatenate all input files
-        for input_file, input_key in zip(input_files, input_keys):
-            with h5py.File(input_file, "r") as f:
-                input_list.append(np.array(f[input_key]))
-
-        # Load and concatenate all output files
-        for output_file, output_key in zip(output_files, output_keys):
-            with h5py.File(output_file, "r") as f:
-                output_list.append(np.array(f[output_key]))
-
-        # Concatenate across the first axis (samples)
-        self.inputs = np.concatenate(input_list, axis=0)
-        self.outputs = np.concatenate(output_list, axis=0)
+        super().__init__(
+            input_files,
+            output_files,
+            input_keys,
+            output_keys,
+            downsample_factor,
+        )
+        self.channel_last = channel_last
 
         b, c, d, h, w = self.outputs[0].shape
         self.h = h // self.downsample_factor
@@ -101,27 +88,28 @@ class BaseDataset(Dataset):
         self.grid = np.stack([x_star, y_star, z_star], axis=-1)
         self.coords = np.hstack([x_star.flatten()[:, None], y_star.flatten()[:, None], z_star.flatten()[:, None]])
 
-        self.inputs = np.expand_dims(self.inputs, axis=0)  # Add channel dimension
-        self.inputs = np.transpose(self.inputs, (2, 3, 1, 0))  # Convert to (H, W, C)
-        self.outputs = np.transpose(
-            self.outputs, (2, 3, 1, 0)
-        )  # Convert to (H, W, D, C)
-
-        # Concatenate the grid and labels to the inputs
-        self.inputs = self.inputs[
-                       :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
-                       ]
-        self.inputs = np.concatenate([batch_inputs, self.grid], axis=-1)
-
-        self.outputs = self.outputs[
-                        :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
-                        ]
-
     def __getitem__(self, index):
         # Get the original batch inputs, outputs, and labels
-        batch_inputs, batch_outputs = self.inputs[index], self.outputs[index]
-        return batch_inputs, batch_outputs
+        batch_inputs, batch_outputs = super().__getitem__(index)
 
+        if self.channel_last:
+            batch_inputs = np.expand_dims(batch_inputs, axis=0)  # Add channel dimension
+            batch_inputs = np.transpose(batch_inputs, (2, 3, 1, 0))  # Convert to (H, W, C)
+            batch_outputs = np.transpose(
+                batch_outputs, (2, 3, 1, 0)
+            )  # Convert to (H, W, D, C)
+
+        # Concatenate the grid and labels to the inputs
+        batch_inputs = batch_inputs[
+            :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
+        ]
+        batch_inputs = np.concatenate([batch_inputs, self.grid], axis=-1)
+
+        batch_outputs = batch_outputs[
+            :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
+        ]
+
+        return batch_inputs, batch_outputs
 
 class CViTDataset(BaseDataset):
     def __init__(
