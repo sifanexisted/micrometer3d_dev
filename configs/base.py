@@ -61,8 +61,8 @@ def get_base_config():
     # Training
     config.training = training = ml_collections.ConfigDict()
     training.max_steps = 2 * 10**5
-    training.max_hours = 72
-    training.num_query_points = 2048  # Only used for CViTDataset
+    training.max_hours = 360
+    training.num_query_points = 4096  # Only used for CViTDataset
     training.resume = False
 
     # Evaluation
