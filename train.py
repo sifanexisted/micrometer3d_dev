@@ -11,7 +11,7 @@ import jax.numpy as jnp
 from jax.experimental import mesh_utils, multihost_utils
 from jax.sharding import Mesh, PartitionSpec as P
 
-from utils.datapipe import create_datasets, create_dataloaders, BatchParser
+from utils.datapipe_backup import create_datasets, create_dataloaders, BatchParser
 
 from utils.model_init import (
     create_model,

@@ -75,6 +75,10 @@ class CViT(nn.Module):
 
     @nn.compact
     def __call__(self, x, coords):
+
+        batch_grid = self.get_grid(x)
+        x = jnp.concatenate([x, batch_grid], axis=-1)  # Concatenate grid coordinates to input
+
         b, h, w, d, c = x.shape
 
         # Lift inputs to latent space by FNO layers
@@ -121,3 +125,13 @@ class CViT(nn.Module):
         x = nn.Dense(self.out_dim)(x)
 
         return x
+
+    @staticmethod
+    def get_grid(x):
+        x1 = jnp.linspace(0, 1, x.shape[1])
+        x2 = jnp.linspace(0, 1, x.shape[2])
+        x3 = jnp.linspace(0, 1, x.shape[3])
+        x1, x2 = jnp.meshgrid(x1, x2, x3, indexing='ij')
+        grid = jnp.expand_dims(jnp.stack([x1, x2,  x3], axis=-1), 0)
+        batched_grid = jnp.repeat(grid, x.shape[0], axis=0)
+        return batched_grid
