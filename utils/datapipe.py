@@ -101,11 +101,9 @@ class BaseDataset(Dataset):
         self.grid = np.stack([x_star, y_star, z_star], axis=-1)
         self.coords = np.hstack([x_star.flatten()[:, None], y_star.flatten()[:, None], z_star.flatten()[:, None]])
 
-        self.inputs = np.expand_dims(self.inputs, axis=0)  # Add channel dimension
-        self.inputs = np.transpose(self.inputs, (2, 3, 1, 0))  # Convert to (H, W, C)
-        self.outputs = np.transpose(
-            self.outputs, (2, 3, 1, 0)
-        )  # Convert to (H, W, D, C)
+        self.inputs = np.expand_dims(self.inputs, axis=1)  # Add channel dimension
+        self.inputs = np.transpose(self.inputs, (0, 3, 4, 2, 1))  # Convert to (H, W, C)
+        self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Convert to (H, W, D, C)
 
         # Concatenate the grid and labels to the inputs
         self.inputs = self.inputs[
