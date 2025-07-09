@@ -108,14 +108,12 @@ class BaseDataset(Dataset):
 
         self.inputs = np.expand_dims(self.inputs, axis=1)  # Add channel dimension
         self.inputs = np.transpose(self.inputs, (0, 3, 4, 2, 1))  # Convert to (H, W, C)
-        self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Convert to (H, W, D, C)
+        self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Co  nvert to (H, W, D, C)
 
         # Concatenate the grid and labels to the inputs
         self.inputs = self.inputs[
                        :, :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                        ]
-        self.inputs = np.concatenate([self.inputs, self.grid], axis=-1)
-
         self.outputs = self.outputs[
                         :, :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                         ]
@@ -123,6 +121,9 @@ class BaseDataset(Dataset):
     def __getitem__(self, index):
         # Get the original batch inputs, outputs, and labels
         batch_inputs, batch_outputs = self.inputs[index], self.outputs[index]
+
+
+
         return batch_inputs, batch_outputs
 
 
