@@ -93,7 +93,7 @@ class BaseDataset(Dataset):
 
 
 
-        b, c, d, h, w = self.outputs[0].shape
+        b, c, d, h, w = self.outputs.shape
         self.h = h // self.downsample_factor
         self.w = w // self.downsample_factor
         self.d = d // self.downsample_factor
