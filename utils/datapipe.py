@@ -118,11 +118,12 @@ class BaseDataset(Dataset):
                         :, :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                         ]
 
+    def __len__(self):
+        return len(self.inputs)
+
     def __getitem__(self, index):
         # Get the original batch inputs, outputs, and labels
         batch_inputs, batch_outputs = self.inputs[index], self.outputs[index]
-
-
 
         return batch_inputs, batch_outputs
 
