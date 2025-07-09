@@ -65,7 +65,7 @@ def get_cvit_h_16_config():
 @_register
 def get_cvit_l_8_config():
     config = ml_collections.ConfigDict()
-    config.model_name = "CViT-L"
+    config.model_name = "CViT-L-8"
     config.patch_size = (8, 8, 4)
     config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
