@@ -85,8 +85,13 @@ class BaseDataset(Dataset):
                 output_list.append(np.array(f[output_key]))
 
         # Concatenate across the first axis (samples)
-        self.inputs = np.concatenate(input_list, axis=0)
-        self.outputs = np.concatenate(output_list, axis=0)
+        self.inputs = np.vstack(input_list)
+        self.outputs = np.vstack(output_list)
+
+        print("Inputs shape:", self.inputs.shape)
+        print("Outputs shape:", self.outputs.shape)
+
+
 
         b, c, d, h, w = self.outputs[0].shape
         self.h = h // self.downsample_factor
