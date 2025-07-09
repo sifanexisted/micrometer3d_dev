@@ -131,7 +131,7 @@ class CViT(nn.Module):
         x1 = jnp.linspace(0, 1, x.shape[1])
         x2 = jnp.linspace(0, 1, x.shape[2])
         x3 = jnp.linspace(0, 1, x.shape[3])
-        x1, x2 = jnp.meshgrid(x1, x2, x3, indexing='ij')
-        grid = jnp.expand_dims(jnp.stack([x1, x2,  x3], axis=-1), 0)
+        x1, x2, x3 = jnp.meshgrid(x1, x2, x3, indexing='ij')
+        grid = jnp.expand_dims(jnp.stack([x1, x2, x3], axis=-1), 0)
         batched_grid = jnp.repeat(grid, x.shape[0], axis=0)
         return batched_grid
