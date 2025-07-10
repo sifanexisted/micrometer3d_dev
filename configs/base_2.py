@@ -38,8 +38,8 @@ def get_base_config():
     dataset.downsample_factor = 1
     dataset.train_batch_size = 8  # Per device
     dataset.test_batch_size = 2  # Per device
-    dataset.train_samples = 1000  # Use all data for training
-    dataset.test_samples = 10  # Use all data for testing
+    dataset.train_samples = 2000  # Use all data for training
+    dataset.test_samples = 4  # Use all data for testing
     dataset.num_workers = 8
 
     # Learning rate
