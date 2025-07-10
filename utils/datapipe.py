@@ -91,8 +91,6 @@ class BaseDataset(Dataset):
         print("Inputs shape:", self.inputs.shape)
         print("Outputs shape:", self.outputs.shape)
 
-
-
         b, c, d, h, w = self.outputs.shape
         self.h = h // self.downsample_factor
         self.w = w // self.downsample_factor
@@ -107,8 +105,8 @@ class BaseDataset(Dataset):
         self.coords = np.hstack([x_star.flatten()[:, None], y_star.flatten()[:, None], z_star.flatten()[:, None]])
 
         self.inputs = np.expand_dims(self.inputs, axis=1)  # Add channel dimension
-        self.inputs = np.transpose(self.inputs, (0, 3, 4, 2, 1))  # Convert to (H, W, C)
-        self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Co  nvert to (H, W, D, C)
+        self.inputs = np.transpose(self.inputs, (0, 3, 4, 2, 1))  # Convert to (B, H, W, D, C)
+        self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Convert to (B, H, W, D, C)
 
         # Concatenate the grid and labels to the inputs
         self.inputs = self.inputs[

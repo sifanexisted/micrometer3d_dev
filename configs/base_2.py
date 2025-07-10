@@ -33,10 +33,10 @@ def get_base_config():
     # Dataset
     config.dataset = dataset = ml_collections.ConfigDict()
     dataset.data_path = "/scratch2/PDEDatasets/CMME/Micrometer3D"
-    dataset.train_files = ["p1", "p2"]
+    dataset.train_files = ["p1", "p2", "p3", "p4"]
     dataset.test_files = ["p1"]
     dataset.downsample_factor = 1
-    dataset.train_batch_size = 16  # Per device
+    dataset.train_batch_size = 8  # Per device
     dataset.test_batch_size = 2  # Per device
     dataset.train_samples = 1000  # Use all data for training
     dataset.test_samples = 10  # Use all data for testing
