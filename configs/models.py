@@ -100,7 +100,7 @@ def get_cvit_l_16_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 16
+    config.out_dim = 5
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
