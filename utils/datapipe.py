@@ -109,7 +109,7 @@ class BaseDataset(Dataset):
 
         if self.use_main_component:
             # Use only the main component of the output
-            idxs = [0, 4, 9, 12, 15]
+            idxs = [0, 4, 11, 12, 15]
             self.outputs = self.outputs[..., idxs]
 
         # Concatenate the grid and labels to the inputs
