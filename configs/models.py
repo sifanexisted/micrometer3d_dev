@@ -18,7 +18,7 @@ def _register(get_config):
 
 
 @_register
-def get_cvit_l_16_config():
+def get_cvit_l_8_main_config():
     config = ml_collections.ConfigDict()
     config.model_name = "CViT-L-8-main"
     config.patch_size = (8, 8, 8)
