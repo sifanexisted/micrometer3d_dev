@@ -90,7 +90,6 @@ class BaseDataset(Dataset):
         self.inputs = np.vstack(input_list)
         self.outputs = np.vstack(output_list)
 
-
         b, c, d, h, w = self.outputs.shape
         self.h = h // self.downsample_factor
         self.w = w // self.downsample_factor
@@ -204,6 +203,7 @@ def create_datasets(config):
         train_data["input_keys"],
         train_data["output_keys"],
         downsample_factor=config.dataset.downsample_factor,
+        use_main_component=config.dataset.use_main_component,
     )
 
     test_dataset = BaseDataset(
@@ -212,6 +212,7 @@ def create_datasets(config):
         test_data["input_keys"],
         test_data["output_keys"],
         downsample_factor=config.dataset.downsample_factor,
+        use_main_component=config.dataset.use_main_component,
     )
 
     if config.dataset.train_samples < len(train_dataset):
