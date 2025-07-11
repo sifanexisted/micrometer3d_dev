@@ -66,10 +66,12 @@ class BaseDataset(Dataset):
         output_files,
         input_keys,
         output_keys,
-        downsample_factor=2
+        downsample_factor=2,
+        use_main_component=False
     ):
         super().__init__()
         self.downsample_factor = downsample_factor
+        self.use_main_component = use_main_component
 
         input_list = []
         output_list = []
@@ -107,6 +109,11 @@ class BaseDataset(Dataset):
         self.inputs = np.expand_dims(self.inputs, axis=1)  # Add channel dimension
         self.inputs = np.transpose(self.inputs, (0, 3, 4, 2, 1))  # Convert to (B, H, W, D, C)
         self.outputs = np.transpose(self.outputs, (0, 3, 4, 2, 1)) # Convert to (B, H, W, D, C)
+
+        if self.use_main_component:
+            # Use only the main component of the output
+            idxs = [0, 4, 9, 12, 15]
+            self.outputs = self.outputs[..., idxs]
 
         # Concatenate the grid and labels to the inputs
         self.inputs = self.inputs[
