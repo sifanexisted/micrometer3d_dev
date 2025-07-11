@@ -18,45 +18,22 @@ def _register(get_config):
 
 
 @_register
-def get_cvit_h_8_config():
-    # need a batch size of 8 for this model when running on GPUs of 40GB memory
+def get_cvit_l_16_config():
     config = ml_collections.ConfigDict()
-    config.model_name = "CViT-H-8"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
+    config.model_name = "CViT-L-16-main"
+    config.patch_size = (16, 16, 8)
+    config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
-    config.fourier_emb_dim = 64
-    config.fourier_modes = 64
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
+    config.fourier_emb_dim = 24
+    config.fourier_modes = 24
+    config.emb_dim = 768
+    config.dec_emb_dim = 768
     config.depth = 8
     config.dec_depth = 2
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 16
-    config.eps = 1e5
-    config.layer_norm_eps = 1e-5
-    return config
-
-@_register
-def get_cvit_h_16_config():
-    # need a batch size of 8 for this model when running on GPUs of 40GB memory
-    config = ml_collections.ConfigDict()
-    config.model_name = "CViT-H-16"
-    config.patch_size = (16, 16)
-    config.grid_size = (256, 256)
-    config.fourier_depth = 4
-    config.fourier_emb_dim = 96
-    config.fourier_modes = 64
-    config.emb_dim = 512
-    config.dec_emb_dim = 512
-    config.depth = 12
-    config.dec_depth = 2
-    config.num_heads = 16
-    config.dec_num_heads = 16
-    config.mlp_ratio = 2
-    config.out_dim = 16
+    config.out_dim = 5
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
@@ -100,7 +77,7 @@ def get_cvit_l_16_config():
     config.num_heads = 16
     config.dec_num_heads = 16
     config.mlp_ratio = 2
-    config.out_dim = 5
+    config.out_dim = 16
     config.eps = 1e5
     config.layer_norm_eps = 1e-5
     return config
