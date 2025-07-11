@@ -20,8 +20,8 @@ def _register(get_config):
 @_register
 def get_cvit_l_16_config():
     config = ml_collections.ConfigDict()
-    config.model_name = "CViT-L-16-main"
-    config.patch_size = (16, 16, 8)
+    config.model_name = "CViT-L-8-main"
+    config.patch_size = (8, 8, 8)
     config.grid_size = (128, 128, 32)
     config.fourier_depth = 4
     config.fourier_emb_dim = 24
