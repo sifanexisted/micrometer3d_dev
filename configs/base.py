@@ -41,6 +41,7 @@ def get_base_config():
     dataset.train_samples = 1000  # Use all data for training
     dataset.test_samples = 10  # Use all data for testing
     dataset.num_workers = 8
+    dataset.use_main_component = False  # Use main component of the mesh
 
     # Learning rate
     config.lr = lr = ml_collections.ConfigDict()
