@@ -90,8 +90,6 @@ class BaseDataset(Dataset):
         self.inputs = np.vstack(input_list)
         self.outputs = np.vstack(output_list)
 
-        print("Inputs shape:", self.inputs.shape)
-        print("Outputs shape:", self.outputs.shape)
 
         b, c, d, h, w = self.outputs.shape
         self.h = h // self.downsample_factor
@@ -122,6 +120,9 @@ class BaseDataset(Dataset):
         self.outputs = self.outputs[
                         :, :: self.downsample_factor, :: self.downsample_factor, :: self.downsample_factor
                         ]
+
+        print("Inputs shape:", self.inputs.shape)
+        print("Outputs shape:", self.outputs.shape)
 
     def __len__(self):
         return len(self.inputs)
